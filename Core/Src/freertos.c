@@ -25,7 +25,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+//#include "uart_process.h"
+//#include "bsp_uart_driver.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,8 +56,26 @@ const osThreadAttr_t defaultTask_attributes = {
   .priority = (osPriority_t) osPriorityNormal,
 };
 
+
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
+/* Definitions for Task_uart_rec_A */
+osThreadId_t processTaskHandle;
+const osThreadAttr_t Task_uart_rec_A_attributes = {
+  .name = "Task_uart_rec_A",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
+/* Definitions for bsp_uart_driver */
+osThreadId_t uartTaskHandle;
+const osThreadAttr_t Task_bsp_uart_driver_attributes = {
+  .name = "Task_bsp_uart_driver",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+
+void uart_rec_A_func(void *argument);
+void uart_driver_func(void *argument);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -94,6 +113,11 @@ void MX_FREERTOS_Init(void) {
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
+  /* creation of Task_uart_rec_A */
+  processTaskHandle = osThreadNew(uart_rec_A_func, NULL, &Task_uart_rec_A_attributes);
+  
+  /* creation of Task_bsp_uart_driver*/
+  uartTaskHandle = osThreadNew(uart_driver_func, NULL, &Task_bsp_uart_driver_attributes);
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */

@@ -110,8 +110,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  SEGGER_RTT_printf(0, "Hello SEGGER RTT\r\n");
-	  HAL_Delay(1000);
+//	  SEGGER_RTT_printf(0, "Hello SEGGER RTT\r\n");
+//	  HAL_Delay(1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

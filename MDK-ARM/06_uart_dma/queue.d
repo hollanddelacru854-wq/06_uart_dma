@@ -1,0 +1,15 @@
+06_uart_dma\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/queue.c
+06_uart_dma\queue.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+06_uart_dma\queue.o: D:\Keil5\ARM\ARMCC\Bin\..\include\string.h
+06_uart_dma\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+06_uart_dma\queue.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
+06_uart_dma\queue.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+06_uart_dma\queue.o: ../Core/Inc/FreeRTOSConfig.h
+06_uart_dma\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+06_uart_dma\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+06_uart_dma\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+06_uart_dma\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+06_uart_dma\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+06_uart_dma\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+06_uart_dma\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+06_uart_dma\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
