@@ -33,6 +33,9 @@
 06_uart_dma\bsp_uart_driver.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 06_uart_dma\bsp_uart_driver.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 06_uart_dma\bsp_uart_driver.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+06_uart_dma\bsp_uart_driver.o: ..\easylogger\inc\elog.h
+06_uart_dma\bsp_uart_driver.o: ..\easylogger\inc\elog_cfg.h
+06_uart_dma\bsp_uart_driver.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 06_uart_dma\bsp_uart_driver.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 06_uart_dma\bsp_uart_driver.o: ../Core/Inc/FreeRTOSConfig.h
 06_uart_dma\bsp_uart_driver.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
@@ -45,7 +48,3 @@
 06_uart_dma\bsp_uart_driver.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 06_uart_dma\bsp_uart_driver.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 06_uart_dma\bsp_uart_driver.o: ..\Middlewares\MID_circular_buffer\mid_circular_buffer.h
-06_uart_dma\bsp_uart_driver.o: ../Middlewares/RTT/SEGGER_RTT.h
-06_uart_dma\bsp_uart_driver.o: ../Middlewares/RTT/SEGGER_RTT_Conf.h
-06_uart_dma\bsp_uart_driver.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
-06_uart_dma\bsp_uart_driver.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdarg.h

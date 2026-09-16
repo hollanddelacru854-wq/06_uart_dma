@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "SEGGER_RTT.h"
+#include "elog.h"
 
 
 circular_buffer_t * create_empty_circular_buffer (void)
@@ -14,7 +14,7 @@ circular_buffer_t * create_empty_circular_buffer (void)
     p_buffer_temp = (circular_buffer_t *) malloc(sizeof(circular_buffer_t));
     if ( NULL == p_buffer_temp ) 
     {
-        SEGGER_RTT_printf(0,"error: create_empty_circular_buffer");
+        log_e("error: create_empty_circular_buffer");
         return NULL;
     }
     

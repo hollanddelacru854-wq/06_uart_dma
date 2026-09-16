@@ -39,7 +39,12 @@
 "06_uart_dma\uart_process.o"
 "06_uart_dma\bsp_uart_driver.o"
 "06_uart_dma\mid_circular_buffer.o"
---strict --scatter "06_uart_dma\06_uart_dma.sct"
+"06_uart_dma\elog_port.o"
+"06_uart_dma\elog.o"
+"06_uart_dma\elog_async.o"
+"06_uart_dma\elog_buf.o"
+"06_uart_dma\elog_utils.o"
+--library_type=microlib --strict --scatter "06_uart_dma\06_uart_dma.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "06_uart_dma.map" -o 06_uart_dma\06_uart_dma.axf

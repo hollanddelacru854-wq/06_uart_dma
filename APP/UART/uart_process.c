@@ -5,7 +5,7 @@
 #include "cmsis_os2.h" 
 #include "task.h" 
 #include "queue.h"
-#include "SEGGER_RTT.h"
+#include "elog.h"
 
 
 QueueHandle_t queue_irq_rec_A = NULL;
@@ -15,22 +15,22 @@ void uart_rec_A_func(void *argument)
   /* USER CODE BEGIN uart_rec_A_func */
   /* Infinite loop */
 	static uint32_t receive_data = 0;
-	SEGGER_RTT_printf(0,"uart_rec_A_func Init Success");
+	log_i("uart_rec_A_func Init Success");
 	queue_irq_rec_A = NULL;
 	queue_irq_rec_A = xQueueCreate( 1, 4 );
 	if ( NULL == queue_irq_rec_A)
 	{
-		SEGGER_RTT_printf(0,"queue_irq_rec_A Init failed");
+		log_i("queue_irq_rec_A Init failed");
 		
 	} else {
-		SEGGER_RTT_printf(0,"queue_irq_rec_A Init Success");
-		SEGGER_RTT_printf(0,"queue_irq_rec_A = [%x]",queue_irq_rec_A);
+		log_i("queue_irq_rec_A Init Success");
+		log_i("queue_irq_rec_A = [%x]",queue_irq_rec_A);
 	}
   for(;;)
   {
 		
 		xQueueReceive(queue_irq_rec_A,&receive_data,0xffff);
-		SEGGER_RTT_printf(0,"receive_data = [%x]",receive_data);
+		log_i("receive_data = [%x]",receive_data);
     osDelay(1);
   }
   /* USER CODE END uart_rec_A_func */

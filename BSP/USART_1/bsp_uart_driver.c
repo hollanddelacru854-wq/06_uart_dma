@@ -8,7 +8,7 @@
 #include "queue.h"
 
 #include "mid_circular_buffer.h"
-#include "SEGGER_RTT.h"
+#include "elog.h"
 
 
 
@@ -17,11 +17,16 @@
 
 extern QueueHandle_t queue_irq_rec_A;
 
-uint8_t flag_AB = BUFFER_A;
+//uint8_t flag_AB = BUFFER_A;
 
-uint8_t g_data_buffer_A[1] = {0x00};
-uint8_t g_data_buffer_B[1] = {0x00};
+//uint8_t g_data_buffer_A[1] = {0x00};
+//uint8_t g_data_buffer_B[1] = {0x00};
 
+
+uint8_t g_data_buffer = 0;
+
+//指向环形缓冲区的指针
+static circular_buffer_t * g_circular_buffer_irq_thread = NULL;
 
 
 void uart_driver_func(void *argument)
@@ -29,59 +34,71 @@ void uart_driver_func(void *argument)
   /* USER CODE BEGIN uart_rec_A_func */
 	/* DEBUG USART */
 	
-    //0. alloc the ring buffer
+	uint8_t temp_data = 0;
+	
+    //创建一个环形缓冲区
     circular_buffer_t * p_circular_buffer = create_empty_circular_buffer();
     if ( NULL == p_circular_buffer )
     {
-        SEGGER_RTT_printf(0,"circular_buffer create failed");
+        log_e("circular_buffer create failed");
     }
-    SEGGER_RTT_printf(0,"circular_buffer create Success.");
+	
+	//指向环形缓冲区
+	g_circular_buffer_irq_thread = p_circular_buffer;
+	
+    log_i("circular_buffer create Success.");
     
+	//判断空
     if ( 0x00 == buffer_is_empty(p_circular_buffer))
     {
-        SEGGER_RTT_printf(0,"buffer_is_empty");
+        log_i("buffer_is_empty");
     }
     
+	//判断满
     if ( 0x00 == buffer_is_full(p_circular_buffer) )
     {
-        SEGGER_RTT_printf(0,"buffer_is_full");
+        log_i("buffer_is_full");
     }
     
+	//插入数据
     if ( 0x00 == insert_data(p_circular_buffer ,15))
     {
-        SEGGER_RTT_printf(0 ,"buffer_inster_success");
+        log_i("buffer_inster_success");
         
     }
-    uint8_t temp_data = 0;
+    
+	//取出数据
     if ( 0x00 == get_data(p_circular_buffer,&temp_data))
     {
-        SEGGER_RTT_printf(0,"buffer_get_success");
+        log_i("buffer_get_success");
     }
-    SEGGER_RTT_printf(0,"buffer_read_out = [%d]",temp_data );
+    log_i("buffer_read_out = [%d]",temp_data );
     
+	
     if ( 0x00 == buffer_is_empty(p_circular_buffer))
     {
-        SEGGER_RTT_printf(0,"buffer_is_empty");
+        log_i("buffer_is_empty");
     }
     if ( 0x00 == buffer_is_full(p_circular_buffer) )
     {
-        SEGGER_RTT_printf(0,"buffer_is_full");
+        log_i("buffer_is_full");
     }
     
-    flag_AB = BUFFER_A;
+//    flag_AB = BUFFER_A;
 	
 	HAL_StatusTypeDef ret = HAL_OK;
 	
-	ret = HAL_UART_Receive_IT(&huart1, g_data_buffer_A, 1);
+	//将数据写入g_data_buffer（进入中断后将数据搬运到环形缓冲区）
+	ret = HAL_UART_Receive_IT(&huart1, &g_data_buffer, 1);
 	
 	
 	if(HAL_OK == ret)
 	{
-		SEGGER_RTT_printf(0,"HAL UART Init Success.");
+		log_i("HAL UART Init Success.");
 	} 
 	else
 	{
-		SEGGER_RTT_printf(0,"HAL UART Init Failed");
+		log_i("HAL UART Init Failed");
 	}
 	/* DEBUG USART */
     
@@ -97,42 +114,50 @@ void uart_driver_func(void *argument)
 /* USER CODE BEGIN 1 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-  /* Prevent unused argument(s) compilation warning */
-  /* NOTE: This function should not be modified, when the callback is needed,
-           the HAL_UART_RxCpltCallback could be implemented in the user file
-   */
-	SEGGER_RTT_printf(0,"HAL_UART_RxCpltCallback");
+   
+   //将串口数据搬运到环形缓冲区
+	if(NULL == g_circular_buffer_irq_thread)
+	{
+	  log_e("error with NULL pointer of g_circular_buffer");
+	  return;
+	}
+      
+	uint8_t ret = 0;
+
+	ret = insert_data(g_circular_buffer_irq_thread,g_data_buffer);
+
+	//判断是否将数据放入环形缓冲区，成功放入就读出来（在中断写入和读出？不合适吧）
+	if( 0x00 == ret )
+	{
+		uint8_t temp_data = 0;
+		if ( 0x00 == get_data(g_circular_buffer_irq_thread, &temp_data))
+		{
+			log_i("circular_buffer_get_success");
+		}
+		log_i("buffer_read_out = [%d]",temp_data );
+	}
 	
-    
-    
-    HAL_StatusTypeDef ret = HAL_OK;
-    
-    if ( BUFFER_A == flag_AB )
-    {
-        SEGGER_RTT_printf(0,"g_data_buffer_A = [%c]",g_data_buffer_A[0]);
-        ret = HAL_UART_Receive_IT(&huart1, g_data_buffer_B, 1);
-        if ( HAL_OK != ret )
-        {
-            SEGGER_RTT_printf(0,"HAL_UART_Receive_IT error!");
-        }
-        flag_AB = BUFFER_B;
-    } 
-    else 
-    {
-        SEGGER_RTT_printf(0,"g_data_buffer_B = [%c]",g_data_buffer_B[0]);
-        ret = HAL_UART_Receive_IT(&huart1, g_data_buffer_A, 1);
-        if ( HAL_OK != ret )
-        {
-            SEGGER_RTT_printf(0,"HAL_UART_Receive_IT error!");
-        }
-        flag_AB = BUFFER_A;
-    }
-        
-    
+	
+	//触发下一次搬运
+	HAL_StatusTypeDef ret_1 = HAL_OK;
+
+	ret_1 = HAL_UART_Receive_IT(&huart1, &g_data_buffer, 1);
+
+
+	if(HAL_OK == ret_1)
+	{
+		log_i("HAL UART Init Success.");
+	} 
+	else
+	{
+		log_i("HAL UART Init Failed");
+	}
+   
    
     
-    //g_data_buffer_A
-	//ret = xQueueSendFromISR( queue_irq_rec_A, &send_data_to_rec_A,NULL);
-	//SEGGER_RTT_printf(0,"ret = [%d]",ret);
+	
+	
+	
+    
 }
 /* USER CODE END 1 */

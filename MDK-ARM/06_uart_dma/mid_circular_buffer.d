@@ -4,6 +4,6 @@
 06_uart_dma\mid_circular_buffer.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
 06_uart_dma\mid_circular_buffer.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
 06_uart_dma\mid_circular_buffer.o: D:\Keil5\ARM\ARMCC\Bin\..\include\string.h
-06_uart_dma\mid_circular_buffer.o: ../Middlewares/RTT/SEGGER_RTT.h
-06_uart_dma\mid_circular_buffer.o: ../Middlewares/RTT/SEGGER_RTT_Conf.h
-06_uart_dma\mid_circular_buffer.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdarg.h
+06_uart_dma\mid_circular_buffer.o: ..\easylogger\inc\elog.h
+06_uart_dma\mid_circular_buffer.o: ..\easylogger\inc\elog_cfg.h
+06_uart_dma\mid_circular_buffer.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
