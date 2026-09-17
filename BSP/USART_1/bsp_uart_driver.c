@@ -10,7 +10,8 @@
 #include "mid_circular_buffer.h"
 #include "elog.h"
 
-
+#define IRQ_SEND_TO_THREAD 0xA1A2A3A4
+#define FRONT_SEND_TO_END  0xB1B2B3B4
 
 #define BUFFER_A 0
 #define BUFFER_B 1
@@ -27,6 +28,7 @@ uint8_t g_data_buffer = 0;
 
 //指向环形缓冲区的指针
 static circular_buffer_t * g_circular_buffer_irq_thread = NULL;
+static QueueHandle_t       queue_uart_irq_thread        = NULL;
 
 
 void uart_driver_func(void *argument)
@@ -35,6 +37,7 @@ void uart_driver_func(void *argument)
 	/* DEBUG USART */
 	
 	uint8_t temp_data = 0;
+	uint32_t receive_data = 0;
 	
     //创建一个环形缓冲区
     circular_buffer_t * p_circular_buffer = create_empty_circular_buffer();
@@ -84,11 +87,20 @@ void uart_driver_func(void *argument)
         log_i("buffer_is_full");
     }
     
-//    flag_AB = BUFFER_A;
 	
+	//创建串口和任务A间的队列
+	queue_uart_irq_thread = xQueueCreate( 5, 4 );
+    if ( NULL == queue_uart_irq_thread )
+    {
+        log_e("circular_buffer create failed");
+    }
+    log_i("queue_uart_irq_thread create success");
+	
+	
+	
+	//第一次启动串口接收数据（放入g_data_buffer）
 	HAL_StatusTypeDef ret = HAL_OK;
 	
-	//将数据写入g_data_buffer（进入中断后将数据搬运到环形缓冲区）
 	ret = HAL_UART_Receive_IT(&huart1, &g_data_buffer, 1);
 	
 	
@@ -100,17 +112,33 @@ void uart_driver_func(void *argument)
 	{
 		log_i("HAL UART Init Failed");
 	}
+	
 	/* DEBUG USART */
     
 
   for(;;)
   {
-        
-  }
+	    xQueueReceive(queue_uart_irq_thread,&receive_data,0xffff);
+		log_i("receive_data = [%x]",receive_data);
+		if( IRQ_SEND_TO_THREAD == receive_data )
+		{
+			//2、将当前数据就绪的事件发送给任务B
+			uint32_t send_to_end = FRONT_SEND_TO_END;
+			BaseType_t ret_queue = pdTRUE;
+			ret_queue = xQueueSend(  queue_irq_rec_A, &send_to_end, 0);
+			
+			if( pdTRUE != ret_queue)
+			{
+				log_e("send error");
+				return;
+			}
+			
+			log_d("xQueueSend to end send success"); 
+		}
   /* USER CODE END uart_rec_A_func */
+  }
+
 }
-
-
 /* USER CODE BEGIN 1 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
@@ -126,16 +154,28 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 	ret = insert_data(g_circular_buffer_irq_thread,g_data_buffer);
 
-	//判断是否将数据放入环形缓冲区，成功放入就读出来（在中断写入和读出？不合适吧）
-	if( 0x00 == ret )
-	{
-		uint8_t temp_data = 0;
-		if ( 0x00 == get_data(g_circular_buffer_irq_thread, &temp_data))
-		{
-			log_i("circular_buffer_get_success");
-		}
-		log_i("buffer_read_out = [%d]",temp_data );
-	}
+//	//判断是否将数据放入环形缓冲区，成功放入就读出来（在中断写入和读出？不合适吧）
+//	if( 0x00 == ret )
+//	{
+//		uint8_t temp_data = 0;
+//		if ( 0x00 == get_data(g_circular_buffer_irq_thread, &temp_data))
+//		{
+//			log_i("circular_buffer_get_success");
+//		}
+//		log_i("buffer_read_out = [%d]",temp_data );
+//	}
+	
+	
+	//将数据放入缓冲区后通知任务A
+    uint32_t send_to_thread = IRQ_SEND_TO_THREAD;
+    BaseType_t ret_queue = pdTRUE;
+    ret_queue = xQueueSendFromISR( queue_uart_irq_thread, &send_to_thread, NULL);
+	if( pdTRUE != ret_queue)
+    {
+        log_e("send error");
+        return;
+    }
+	
 	
 	
 	//触发下一次搬运
@@ -152,7 +192,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	{
 		log_i("HAL UART Init Failed");
 	}
-   
    
     
 	
