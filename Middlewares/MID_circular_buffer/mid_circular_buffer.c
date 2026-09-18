@@ -1,3 +1,7 @@
+
+//有关环形缓冲区的数据结构
+
+
 #include "mid_circular_buffer.h"
 
 #include <stddef.h>
@@ -5,6 +9,9 @@
 #include <string.h>
 
 #include "elog.h"
+
+
+
 
 
 //创建环形缓冲区
@@ -104,5 +111,35 @@ uint8_t get_data (circular_buffer_t * p_buffer, data_type_t * data)
     
     return 0x00;
 }
+
+
+//获取目前头指针的位置
+uint8_t get_head_pos(circular_buffer_t * p_buffer,uint32_t * head)
+{
+    if ( NULL == p_buffer )
+    {
+        return 0xFF;
+    }
+    *head = p_buffer->head;
+    
+    return 0x00;
+}
+
+
+
+//移动头指针的位置
+uint8_t head_pos_increment(circular_buffer_t * p_buffer,uint32_t increament_num)
+{
+    if ( NULL == p_buffer )
+    {
+        return 0xFF;
+    }
+    p_buffer->head += increament_num;
+    
+    return 0x00;
+}
+
+
+
 
 

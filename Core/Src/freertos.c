@@ -56,13 +56,12 @@ const osThreadAttr_t defaultTask_attributes = {
   .priority = (osPriority_t) osPriorityNormal,
 };
 
-
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 /* Definitions for Task_uart_rec_A */
 osThreadId_t processTaskHandle;
-const osThreadAttr_t Task_uart_rec_A_attributes = {
-  .name = "Task_uart_rec_A",
+const osThreadAttr_t uart_process_attributes = {
+  .name = "Uart_process_Task",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
@@ -113,13 +112,12 @@ void MX_FREERTOS_Init(void) {
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
-  /* creation of Task_uart_rec_A */
-  processTaskHandle = osThreadNew(uart_rec_A_func, NULL, &Task_uart_rec_A_attributes);
-  
-  /* creation of Task_bsp_uart_driver*/
-  uartTaskHandle = osThreadNew(uart_driver_func, NULL, &Task_bsp_uart_driver_attributes);
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+  
+  uartTaskHandle = osThreadNew(uart_driver_func, NULL, &Task_bsp_uart_driver_attributes);
+  processTaskHandle = osThreadNew(uart_rec_A_func, NULL, &uart_process_attributes);
+  
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */

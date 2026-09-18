@@ -31,8 +31,8 @@
 06_uart_dma\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 06_uart_dma\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 06_uart_dma\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-06_uart_dma\main.o: ..\easylogger\inc\elog.h
-06_uart_dma\main.o: ..\easylogger\inc\elog_cfg.h
+06_uart_dma\main.o: ../easylogger/inc/elog.h
+06_uart_dma\main.o: ../easylogger/inc/elog_cfg.h
 06_uart_dma\main.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 06_uart_dma\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
 06_uart_dma\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
@@ -45,6 +45,7 @@
 06_uart_dma\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 06_uart_dma\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 06_uart_dma\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
+06_uart_dma\main.o: ../Core/Inc/dma.h
 06_uart_dma\main.o: ../Core/Inc/usart.h
 06_uart_dma\main.o: ../Core/Inc/gpio.h
 06_uart_dma\main.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdio.h

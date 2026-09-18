@@ -3,6 +3,7 @@
 "06_uart_dma\main.o"
 "06_uart_dma\gpio.o"
 "06_uart_dma\freertos.o"
+"06_uart_dma\dma.o"
 "06_uart_dma\usart.o"
 "06_uart_dma\stm32f4xx_it.o"
 "06_uart_dma\stm32f4xx_hal_msp.o"

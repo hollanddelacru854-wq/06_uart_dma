@@ -10,11 +10,6 @@
 
 extern QueueHandle_t queue_irq_rec_A;
 
-//uint8_t flag_AB = BUFFER_A;
-
-//uint8_t g_data_buffer_A[1] = {0x00};
-//uint8_t g_data_buffer_B[1] = {0x00};
-
 
 uint8_t g_data_buffer = 0;
 
@@ -28,7 +23,7 @@ void uart_driver_func(void *argument)
   /* USER CODE BEGIN uart_rec_A_func */
 	/* DEBUG USART */
 	
-	uint8_t temp_data = 0;
+
 	uint32_t receive_data = 0;
 	
     //创建一个环形缓冲区
@@ -38,47 +33,14 @@ void uart_driver_func(void *argument)
         log_e("circular_buffer create failed");
     }
 	
+	
+	log_i( "p_circular_buffer = [0x%p]",p_circular_buffer);
 	//指向环形缓冲区
 	g_circular_buffer_irq_thread = p_circular_buffer;
 	
     log_i("circular_buffer create Success.");
     
-	//判断空
-    if ( 0x00 == buffer_is_empty(p_circular_buffer))
-    {
-        log_i("buffer_is_empty");
-    }
-    
-	//判断满
-    if ( 0x00 == buffer_is_full(p_circular_buffer) )
-    {
-        log_i("buffer_is_full");
-    }
-    
-	//插入数据
-    if ( 0x00 == insert_data(p_circular_buffer ,15))
-    {
-        log_i("buffer_inster_success");
-        
-    }
-    
-	//取出数据
-    if ( 0x00 == get_data(p_circular_buffer,&temp_data))
-    {
-        log_i("buffer_get_success");
-    }
-    log_i("buffer_read_out = [%d]",temp_data );
-    
-	
-    if ( 0x00 == buffer_is_empty(p_circular_buffer))
-    {
-        log_i("buffer_is_empty");
-    }
-    if ( 0x00 == buffer_is_full(p_circular_buffer) )
-    {
-        log_i("buffer_is_full");
-    }
-    
+
 	
 	//创建串口和任务A间的队列
 	queue_uart_irq_thread = xQueueCreate( 1, 4 );
@@ -93,8 +55,10 @@ void uart_driver_func(void *argument)
 	//第一次启动串口接收数据（放入g_data_buffer）
 	HAL_StatusTypeDef ret = HAL_OK;
 	
-	ret = HAL_UART_Receive_IT(&huart1, &g_data_buffer, 1);
+//	ret = HAL_UART_Receive_IT(&huart1, &g_data_buffer, 1);
 	
+	//开启串口空闲中断接收+DMA半满全满
+	HAL_UARTEx_ReceiveToIdle_DMA(&huart1,p_circular_buffer->data,CIRCULAR_BUFFER_SIZE);
 	
 	if(HAL_OK == ret)
 	{
@@ -177,17 +141,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	HAL_StatusTypeDef ret_1 = HAL_OK;
 
 	ret_1 = HAL_UART_Receive_IT(&huart1, &g_data_buffer, 1);
-
-
-	if(HAL_OK == ret_1)
-	{
-		log_i("HAL UART Init Success.");
-	} 
-	else
-	{
-		log_i("HAL UART Init Failed");
-	}
-   
     
     
 }
@@ -208,7 +161,183 @@ circular_buffer_t * get_circular_buffer(void)
 
 
 
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+    log_d("HAL_UARTEx_RxEventCallback size = [%d]",Size ); 
+}
 
+
+
+//半满中断的处理函数
+void dma_half_irq_callback(uint32_t number_of_data)
+{
+	//实现半满中断的逻辑
+
+    uint32_t head_pos = 0;
+    uint8_t ret = 0;
+	
+	
+    //1.获取当前位置
+    ret=get_head_pos(g_circular_buffer_irq_thread,&head_pos);
+    if( 0x00 != ret)
+    {
+        log_d("get head pos error" ); 
+    }
+
+	
+    //2.获取进入半满中断时，数据已经到达的位置：(CIRCULAR_BUFFER_SIZE/2)-1
+    uint32_t current_data_pos = (CIRCULAR_BUFFER_SIZE/2);
+    
+	
+    //3.对heap进行取余数
+    uint32_t pos_in_buffer = head_pos%(CIRCULAR_BUFFER_SIZE/2);
+    
+	
+    //4.算出当前应该偏移的数量
+    uint32_t move_pos = 0x00;
+    if(current_data_pos < pos_in_buffer)
+    {
+        move_pos = (current_data_pos+CIRCULAR_BUFFER_SIZE) - pos_in_buffer;
+    } 
+    else
+    {
+        move_pos = current_data_pos - pos_in_buffer;
+    }
+    
+	
+    //5.对head位置进行累加
+    head_pos_increment(g_circular_buffer_irq_thread,move_pos);
+    
+	
+    //6.通知处理串口数据的任务B
+    uint32_t send_to_thread = IRQ_SEND_TO_THREAD;
+    BaseType_t ret_queue = pdTRUE;
+    ret_queue = xQueueGenericSendFromISR( queue_uart_irq_thread, &send_to_thread,NULL,queueOVERWRITE);
+    log_d("dma_half_irq_callback ret_queue = [%d]",ret_queue); 
+    
+	
+	
+}
+
+
+//全满中断的处理函数
+void dma_comp_irq_callback(uint32_t number_of_data)
+{
+    //实现全满中断的逻辑
+	
+    uint32_t head_pos = 0;
+    uint8_t ret = 0;
+    
+	
+    //1.获取当前位置
+    ret=get_head_pos(g_circular_buffer_irq_thread,&head_pos);
+    if( 0x00 != ret)
+    {
+        log_d("get head pos error" ); 
+    }
+
+
+    //2.获取进入全满中断时，数据已经到达的位置：(CIRCULAR_BUFFER_SIZE)-1
+    uint32_t current_data_pos = (CIRCULAR_BUFFER_SIZE);
+    
+	
+    //3.对heap进行取余数
+    uint32_t pos_in_buffer = head_pos%(CIRCULAR_BUFFER_SIZE);
+    
+	
+    //4.算出当前应该偏移的数量
+    uint32_t move_pos = 0x00;
+    if(current_data_pos < pos_in_buffer)
+    {
+        move_pos = (current_data_pos+CIRCULAR_BUFFER_SIZE) - pos_in_buffer;
+    } 
+    else
+    {
+        move_pos = current_data_pos - pos_in_buffer;
+    }
+    
+    //5.对head位置进行累加
+    head_pos_increment(g_circular_buffer_irq_thread,move_pos);
+    
+    //6.通知处理串口数据的任务B
+    uint32_t send_to_thread = IRQ_SEND_TO_THREAD;
+    BaseType_t ret_queue = pdTRUE;
+    ret_queue = xQueueGenericSendFromISR( queue_uart_irq_thread, &send_to_thread,NULL,queueOVERWRITE);
+    log_d("dma_comp_irq_callback ret_queue = [%d]",ret_queue); 
+
+	
+	
+    ret=get_head_pos(g_circular_buffer_irq_thread,&head_pos);
+    if( 0x00 != ret)
+    {
+        log_d("get head pos error" ); 
+    }
+    
+    pos_in_buffer = head_pos%(CIRCULAR_BUFFER_SIZE);
+    
+    
+    
+}
+
+
+
+//空闲中断的处理函数
+void uart_idle_irq_callback(uint32_t number_of_data)
+{
+	
+	//实现空闲中断的逻辑：取余，移动头指针
+	
+    uint32_t head_pos = 0;
+    uint8_t ret = 0;
+    
+    //1.获取当前位置
+    ret=get_head_pos(g_circular_buffer_irq_thread,&head_pos);
+    if( 0x00 != ret)
+    {
+        log_d("get head pos error" ); 
+    }
+
+
+    //2.获取进入空闲中断时，数据已经到达的位置：number_of_data-1
+    uint32_t current_data_pos = number_of_data;
+
+    
+    //3.对heap进行取余数
+    uint32_t pos_in_buffer = head_pos%(CIRCULAR_BUFFER_SIZE);
+
+    
+    //4.算出当前应该偏移的数量
+    uint32_t move_pos = 0x00;
+    if(current_data_pos < pos_in_buffer)
+    {
+        move_pos = (current_data_pos+CIRCULAR_BUFFER_SIZE) - pos_in_buffer;
+    } 
+    else
+    {
+        move_pos = current_data_pos - pos_in_buffer;
+    }
+	
+	
+    //5.对head位置进行累加
+    head_pos_increment(g_circular_buffer_irq_thread,move_pos);
+	
+	
+    //6.通知处理串口数据的任务B
+	uint32_t send_to_thread = IRQ_SEND_TO_THREAD;
+    BaseType_t ret_queue = pdTRUE;
+    ret_queue = xQueueGenericSendFromISR( queue_uart_irq_thread, &send_to_thread,NULL,queueOVERWRITE);
+    log_d("uart_idle_irq_callback ret_queue = [%d]",ret_queue);
+	
+    ret=get_head_pos(g_circular_buffer_irq_thread,&head_pos);
+    if( 0x00 != ret)
+    {
+        log_d("get head pos error" ); 
+    }
+    
+    pos_in_buffer = head_pos%(CIRCULAR_BUFFER_SIZE);
+    
+    
+}
 
 
 

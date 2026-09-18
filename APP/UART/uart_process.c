@@ -49,13 +49,13 @@ void uart_rec_A_func(void *argument)
 		static uint8_t temp_data_array[20] = {0x00};
 		
 		
-	   
+	   //打印成功接收到的数据
 		if ( 0x00 == get_data(g_circular_buffer_from_driver,&temp_data))
 		{
-//			log_i("buffer_get_success");
 		}
 		osDelay(2);
-		
+		log_i("buffer_read_out from APP = [%d]",temp_data );
+		log_i("g_circular_buffer_from_driver->head = [%d]",g_circular_buffer_from_driver->head);
 		
 
 		// 第2步、寻找帧头，如果检测到帧头，则开始输出帧头后的数据

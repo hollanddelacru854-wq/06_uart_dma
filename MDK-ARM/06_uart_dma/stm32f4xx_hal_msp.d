@@ -31,6 +31,6 @@
 06_uart_dma\stm32f4xx_hal_msp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 06_uart_dma\stm32f4xx_hal_msp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 06_uart_dma\stm32f4xx_hal_msp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-06_uart_dma\stm32f4xx_hal_msp.o: ..\easylogger\inc\elog.h
-06_uart_dma\stm32f4xx_hal_msp.o: ..\easylogger\inc\elog_cfg.h
+06_uart_dma\stm32f4xx_hal_msp.o: ../easylogger/inc/elog.h
+06_uart_dma\stm32f4xx_hal_msp.o: ../easylogger/inc/elog_cfg.h
 06_uart_dma\stm32f4xx_hal_msp.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h

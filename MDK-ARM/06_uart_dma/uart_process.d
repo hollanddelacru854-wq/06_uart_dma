@@ -13,11 +13,11 @@
 06_uart_dma\uart_process.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 06_uart_dma\uart_process.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 06_uart_dma\uart_process.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
-06_uart_dma\uart_process.o: ..\easylogger\inc\elog.h
-06_uart_dma\uart_process.o: ..\easylogger\inc\elog_cfg.h
+06_uart_dma\uart_process.o: ../easylogger/inc/elog.h
+06_uart_dma\uart_process.o: ../easylogger/inc/elog_cfg.h
 06_uart_dma\uart_process.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
-06_uart_dma\uart_process.o: ..\Middlewares\MID_circular_buffer\mid_circular_buffer.h
-06_uart_dma\uart_process.o: ..\BSP\USART_1\bsp_uart_driver.h
+06_uart_dma\uart_process.o: ../Middlewares/MID_circular_buffer/mid_circular_buffer.h
+06_uart_dma\uart_process.o: ../BSP/USART_1/bsp_uart_driver.h
 06_uart_dma\uart_process.o: ../Core/Inc/usart.h
 06_uart_dma\uart_process.o: ../Core/Inc/main.h
 06_uart_dma\uart_process.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
