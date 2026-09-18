@@ -1,14 +1,6 @@
 #include "bsp_uart_driver.h"
 
-#include "usart.h"
 
-#include "FreeRTOS.h"
-#include "cmsis_os2.h" 
-#include "task.h" 
-#include "queue.h"
-
-#include "mid_circular_buffer.h"
-#include "elog.h"
 
 #define IRQ_SEND_TO_THREAD 0xA1A2A3A4
 #define FRONT_SEND_TO_END  0xB1B2B3B4
@@ -89,7 +81,7 @@ void uart_driver_func(void *argument)
     
 	
 	//创建串口和任务A间的队列
-	queue_uart_irq_thread = xQueueCreate( 5, 4 );
+	queue_uart_irq_thread = xQueueCreate( 1, 4 );
     if ( NULL == queue_uart_irq_thread )
     {
         log_e("circular_buffer create failed");
@@ -125,7 +117,8 @@ void uart_driver_func(void *argument)
 			//2、将当前数据就绪的事件发送给任务B
 			uint32_t send_to_end = FRONT_SEND_TO_END;
 			BaseType_t ret_queue = pdTRUE;
-			ret_queue = xQueueSend(  queue_irq_rec_A, &send_to_end, 0);
+			//开启复写模式避免出现send error
+			ret_queue = xQueueGenericSend(  queue_irq_rec_A, &send_to_end, 0, queueOVERWRITE);
 			
 			if( pdTRUE != ret_queue)
 			{
@@ -139,6 +132,7 @@ void uart_driver_func(void *argument)
   }
 
 }
+
 /* USER CODE BEGIN 1 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
@@ -169,7 +163,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	//将数据放入缓冲区后通知任务A
     uint32_t send_to_thread = IRQ_SEND_TO_THREAD;
     BaseType_t ret_queue = pdTRUE;
-    ret_queue = xQueueSendFromISR( queue_uart_irq_thread, &send_to_thread, NULL);
+	//开启复写模式
+    ret_queue = xQueueGenericSendFromISR( queue_uart_irq_thread, &send_to_thread, NULL, queueOVERWRITE);
 	if( pdTRUE != ret_queue)
     {
         log_e("send error");
@@ -194,9 +189,32 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	}
    
     
-	
-	
-	
     
 }
+
+
+
+//将指向缓冲区的指针传出的函数
+circular_buffer_t * get_circular_buffer(void)
+{
+        
+    if ( NULL == g_circular_buffer_irq_thread )
+    {
+        return NULL;
+    }
+    
+    return g_circular_buffer_irq_thread;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 /* USER CODE END 1 */

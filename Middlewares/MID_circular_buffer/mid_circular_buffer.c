@@ -7,10 +7,11 @@
 #include "elog.h"
 
 
+//创建环形缓冲区
 circular_buffer_t * create_empty_circular_buffer (void)
 {
     circular_buffer_t * p_buffer_temp = NULL;
-    // 1. alloct the memory space
+    
     p_buffer_temp = (circular_buffer_t *) malloc(sizeof(circular_buffer_t));
     if ( NULL == p_buffer_temp ) 
     {
@@ -18,14 +19,15 @@ circular_buffer_t * create_empty_circular_buffer (void)
         return NULL;
     }
     
-    // 2. memory init
+    
     memset ( p_buffer_temp, 0, sizeof(circular_buffer_t));
     
     return p_buffer_temp;
 }
 
 
-uint8_t             buffer_is_empty  (circular_buffer_t * p_buffer)
+//判断缓冲区是否空
+uint8_t buffer_is_empty(circular_buffer_t * p_buffer)
 {
     if ( NULL == p_buffer )
     {
@@ -42,7 +44,8 @@ uint8_t             buffer_is_empty  (circular_buffer_t * p_buffer)
 }
 
 
-uint8_t             buffer_is_full   (circular_buffer_t * p_buffer)
+//判断缓冲区是否满
+uint8_t buffer_is_full(circular_buffer_t * p_buffer)
 {
     if ( NULL == p_buffer )
     {
@@ -62,8 +65,8 @@ uint8_t             buffer_is_full   (circular_buffer_t * p_buffer)
 }
 
 
-uint8_t             insert_data      (circular_buffer_t * p_buffer,\
-                                                  data_type_t data)
+//向缓冲区插入数据
+uint8_t insert_data (circular_buffer_t * p_buffer,data_type_t data)
 {
     if ( NULL == p_buffer )
     {
@@ -83,21 +86,10 @@ uint8_t             insert_data      (circular_buffer_t * p_buffer,\
 
 }
 
-/**
- * @brief get_data.
- * 
- *  
- * @param[in] circular_buffer_t : Pointer to the target of handler.
- * 
-* @return      uint8_t : 
-                        0xff:error, the buffer pointer is NULL;
-                        0xfe:error, the buffer is empty;
-                        0x00:success
-                        0x01:failed
- * 
- * */
-uint8_t             get_data         (circular_buffer_t * p_buffer,\
-                                                data_type_t * data)
+
+
+//在缓冲区中获取数据
+uint8_t get_data (circular_buffer_t * p_buffer, data_type_t * data)
 {
     if ( NULL == p_buffer )
     {

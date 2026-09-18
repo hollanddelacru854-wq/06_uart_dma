@@ -986,8 +986,8 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h)(0x6A8DB7F0)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/task.h)(0x6A8DB7F0)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x6A8DB7F0)
-F (..\APP\UART\uart_process.c)(0x6AAA5F5F)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Middlewares/RTT -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ..\Middlewares\MID_circular_buffer -I ..\BSP\USART_1 -I ..\APP\UART -I ..\easylogger\inc-I.\RTE\_06_uart_dma-ID:\Keil5\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil5\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F411xE-o 06_uart_dma\uart_process.o --omf_browse 06_uart_dma\uart_process.crf --depend 06_uart_dma\uart_process.d)
-I (..\APP\UART\uart_process.h)(0x6AA9F774)
+F (..\APP\UART\uart_process.c)(0x6AACC986)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Middlewares/RTT -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ..\Middlewares\MID_circular_buffer -I ..\BSP\USART_1 -I ..\APP\UART -I ..\easylogger\inc-I.\RTE\_06_uart_dma-ID:\Keil5\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil5\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F411xE-o 06_uart_dma\uart_process.o --omf_browse 06_uart_dma\uart_process.crf --depend 06_uart_dma\uart_process.d)
+I (..\APP\UART\uart_process.h)(0x6AACC94B)
 I (D:\Keil5\ARM\ARMCC\include\stdint.h)(0x6025237E)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x6A8DB7F0)
 I (D:\Keil5\ARM\ARMCC\include\stddef.h)(0x6025237E)
@@ -1004,9 +1004,41 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x6A8DB7F0)
 I (..\easylogger\inc\elog.h)(0x6A7D914F)
 I (..\easylogger\inc\elog_cfg.h)(0x6AAA5D0E)
 I (D:\Keil5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-F (..\APP\UART\uart_process.h)(0x6AA9F774)()
-F (..\BSP\USART_1\bsp_uart_driver.c)(0x6AABA985)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Middlewares/RTT -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ..\Middlewares\MID_circular_buffer -I ..\BSP\USART_1 -I ..\APP\UART -I ..\easylogger\inc-I.\RTE\_06_uart_dma-ID:\Keil5\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil5\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F411xE-o 06_uart_dma\bsp_uart_driver.o --omf_browse 06_uart_dma\bsp_uart_driver.crf --depend 06_uart_dma\bsp_uart_driver.d)
-I (..\BSP\USART_1\bsp_uart_driver.h)(0x67433089)
+I (..\Middlewares\MID_circular_buffer\mid_circular_buffer.h)(0x6AA9F837)
+I (..\BSP\USART_1\bsp_uart_driver.h)(0x6AACC552)
+I (../Core/Inc/usart.h)(0x6AA911D5)
+I (../Core/Inc/main.h)(0x6AAA55C2)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x6A8DB82B)
+I (../Core/Inc/stm32f4xx_hal_conf.h)(0x6AA9352C)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x6A8DB82B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h)(0x6A8DB82B)
+I (../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h)(0x6A8DB82B)
+I (../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h)(0x6A8DB82B)
+I (../Drivers/CMSIS/Include/core_cm4.h)(0x6A8DB82B)
+I (../Drivers/CMSIS/Include/cmsis_version.h)(0x6A8DB82B)
+I (../Drivers/CMSIS/Include/cmsis_compiler.h)(0x6A8DB82B)
+I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x6A8DB82B)
+I (../Drivers/CMSIS/Include/mpu_armv7.h)(0x6A8DB82B)
+I (../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h)(0x6A8DB82B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h)(0x6A8DB82B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h)(0x6A8DB82B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h)(0x6A8DB82B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h)(0x6A8DB82B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_exti.h)(0x6A8DB82B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h)(0x6A8DB82B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma_ex.h)(0x6A8DB82B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h)(0x6A8DB82B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h)(0x6A8DB82B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h)(0x6A8DB82B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h)(0x6A8DB82B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h)(0x6A8DB82B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x6A8DB82B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x6A8DB82B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x6A8DB82B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x6A8DB82B)
+F (..\APP\UART\uart_process.h)(0x6AACC94B)()
+F (..\BSP\USART_1\bsp_uart_driver.c)(0x6AACC552)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Middlewares/RTT -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ..\Middlewares\MID_circular_buffer -I ..\BSP\USART_1 -I ..\APP\UART -I ..\easylogger\inc-I.\RTE\_06_uart_dma-ID:\Keil5\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil5\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F411xE-o 06_uart_dma\bsp_uart_driver.o --omf_browse 06_uart_dma\bsp_uart_driver.crf --depend 06_uart_dma\bsp_uart_driver.d)
+I (..\BSP\USART_1\bsp_uart_driver.h)(0x6AACC552)
 I (../Core/Inc/usart.h)(0x6AA911D5)
 I (../Core/Inc/main.h)(0x6AAA55C2)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x6A8DB82B)
@@ -1054,8 +1086,8 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/task.h)(0x6A8DB7F0)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x6A8DB7F0)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x6A8DB7F0)
 I (..\Middlewares\MID_circular_buffer\mid_circular_buffer.h)(0x6AA9F837)
-F (..\BSP\USART_1\bsp_uart_driver.h)(0x67433089)()
-F (..\Middlewares\MID_circular_buffer\mid_circular_buffer.c)(0x6AAA5F6A)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Middlewares/RTT -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ..\Middlewares\MID_circular_buffer -I ..\BSP\USART_1 -I ..\APP\UART -I ..\easylogger\inc-I.\RTE\_06_uart_dma-ID:\Keil5\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil5\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F411xE-o 06_uart_dma\mid_circular_buffer.o --omf_browse 06_uart_dma\mid_circular_buffer.crf --depend 06_uart_dma\mid_circular_buffer.d)
+F (..\BSP\USART_1\bsp_uart_driver.h)(0x6AACC552)()
+F (..\Middlewares\MID_circular_buffer\mid_circular_buffer.c)(0x6AACC797)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Middlewares/RTT -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ..\Middlewares\MID_circular_buffer -I ..\BSP\USART_1 -I ..\APP\UART -I ..\easylogger\inc-I.\RTE\_06_uart_dma-ID:\Keil5\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil5\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F411xE-o 06_uart_dma\mid_circular_buffer.o --omf_browse 06_uart_dma\mid_circular_buffer.crf --depend 06_uart_dma\mid_circular_buffer.d)
 I (..\Middlewares\MID_circular_buffer\mid_circular_buffer.h)(0x6AA9F837)
 I (D:\Keil5\ARM\ARMCC\include\stdint.h)(0x6025237E)
 I (D:\Keil5\ARM\ARMCC\include\stddef.h)(0x6025237E)
